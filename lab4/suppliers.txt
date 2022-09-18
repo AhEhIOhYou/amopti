@@ -1,0 +1,4 @@
+Company_name    Contact_person  Bank_account    Tel             Fax     Materials       Del_cont    Del_real    Del_method  Delivery_cost
+Levhukda        Test O.A.       12345           808005553535    123     Telescopes      21.21.2003  21.07.2012  Courier_    100
+HukLeven        OTest D.A.      54321           999999999999    111     Microscopes     11.09.2003  12.00.2003  Courier_    200
+Kuhnevel        Ogoest I.A.     12121           888888888888    333     Binoculars      10.09.2003  10.09.2003  Courier_    300
