@@ -5,161 +5,156 @@ use Data::Dumper qw(Dumper);
 my $fileOpenError = "file open error";
 my $fh;
 
-my $data = {
-    fileName => "",
-    text     => "",
-    headings => (),
-    records  => (),
-    colCount => 0,
-    rowCount => 0,
-};
+my $fileName = "suppliers.txt";
+my $headings = ();
+my $records = ();
 
-sub loadData {
-    local $inFile = "suppliers.txt";
+sub GetFromFile {
     local $inText = "";
 
-    open($fh, '<', $inFile) || die($fileOpenError);
-    while (local $str = <$fh>) {
+    open $fh, '<', $fileName || die $fileOpenError;
+    while (local $str = <$fh>)
+    {
         $inText .= $str;
     }
-    close($fh);
+    close $fh;
 
-    local @arrData = split(/\n/, $inText);
-    local @arrHeadings = split(/\s+/, @arrData[0]);
+    local @arrData = split /\n/, $inText;
+    local @arrHeadings = split /\s+/, @arrData[0];
+    $headings = \@arrHeadings;
 
-    shift @arrData;
     local @arrRecords = ();
+    shift @arrData;
 
-    for my $i (0 .. $#arrData) {
-        my @dataParts = split(/\s+/, @arrData[$i]);
+    for my $i (0 .. $#arrData)
+    {
+        my @dataParts = split /\s+/, @arrData[$i];
 
-        for my $j (0 .. $#dataParts) {
+        for my $j (0 .. $#dataParts)
+        {
             $arrRecords[$i][$j] = $dataParts[$j];
         }
     }
 
-    $data->{fileName} = $inFile;
-    $data->{text} = $inText;
-    $data->{headings} = \@arrHeadings;
-    $data->{records} = \@arrRecords;
-    $data->{colCount} = scalar(@arrHeadings);
-    $data->{rowCount} = scalar(@arrRecords);
+    $records = \@arrRecords;
 }
-sub printTable {
-    local $headings = $data->{headings};
-    local $records = $data->{records};
+sub GetTableFormatText {
     local $text = "";
 
-    for (my $i = 0; $i < $data->{colCount}; $i++)
+    foreach $heading (@{$headings})
     {
-        $text .= ${$headings}[$i] . "\t";
+        $text .= $heading . "\t";
     }
     $text .= "\n";
 
-    for (my $i = 0; $i < $data->{rowCount}; $i++)
+    foreach $arrRecord (@{$records})
     {
-        for (my $j = 0; $j < $data->{colCount}; $j++)
+        foreach $recordData (@{$arrRecord})
         {
-            $text .= ${$records}[$i][$j] . "\t";
+            $text .= $recordData . "\t";
         }
         $text .= "\n";
     }
 
     return $text;
 }
-sub addRecord {
-    local $headings = $data->{headings};
-    local $records = $data->{records};
-    local @newValues;
-    for (my $i = 0; $i < $data->{colCount}; $i++)
+sub AddRecord {
+    local @newData;
+
+    for (my $i = 0; $i < $#{$headings} + 1; $i++)
     {
         print ${$headings}[$i] . ": ";
         local $inputValue = <>;
-        chomp($inputValue);
-        $newValues[$i] = $inputValue;
+        chomp $inputValue;
+        $newData[$i] = $inputValue;
     }
-    push(@$records, \@newValues);
-    $data->{rowCount}++;
-}
-sub saveToFile {
-    local $fileName = $data->{fileName};
-    open($fh, '>', $fileName) || die($fileOpenError);
-    print $fh printTable();
-    close($fh);
-}
-sub getRecordIndexByName {
-    local $nameToSearch = shift;
-    local $records = $data->{records};
-    local $index = -1;
 
-    for (my $i = 0; $i < $data->{rowCount}; $i++)
+    push @$records, \@newData;
+    print "Successfully added!\n";
+}
+sub SaveToFile {
+    open $fh, '>', $fileName || die $fileOpenError;
+    print $fh printTable;
+    close $fh;
+}
+sub DeleteRecordByCompanyName {
+    print "Company Name: ";
+    local $nameSearch = <>;
+    chomp $nameSearch;
+
+    local $deleteIndex = -1;
+
+    while (my ($i, $element) = each(@{$records}))
     {
-        if (${$records}[$i][0] eq $nameToSearch)
+        if (${$element}[0] eq $nameSearch)
         {
-            $index = $i;
+            $deleteIndex = $i;
             last;
         }
     }
 
-    return $index;
-}
-sub deleteByCompanyName {
-    local $nameSearch = shift;
-    local $deleteIndex = getRecordIndexByName($nameSearch);
-    if ($deleteIndex > -1) {
-        splice(@{$data->{lines}}, $deleteIndex, 1);
+    if ($deleteIndex > -1)
+    {
+        print $deleteIndex . "\n";
+        splice @{$records}, $deleteIndex, 1;
+        print "\"$nameSearch\" successfully deleted";
     }
-    else {
-        print "Error, compant $nameSearch doesn't exist";
+    else
+    {
+        print "Error, company \"$nameSearch\" doesn't exist\n";
     }
 }
-sub search {
-    local $searchText = shift;
-    local $resultText = "";
-    local @indexFound = ();
-    local $headings = $data->{headings};
-    local $records = $data->{records};
+sub Search {
+    print "Search: ";
+    local $searchText = <>;
+    chomp $searchText;
 
-    for (my $i = 0; $i < $data->{rowCount}; $i++) {
-        for (my $j = 0; $j < $data->{colCount}; $j++) {
-            if (${$records}[$i][$j] =~ /$searchText/) {
-                push(@indexFound, $i);
+    local @indexFound = ();
+
+    while (my ($i, $arrRecord) = each(@{$records}))
+    {
+        foreach $recordData (@{$arrRecord})
+        {
+            if ($recordData =~ /$searchText/)
+            {
+                push @indexFound, $i;
                 last;
             }
         }
     }
 
-    if (@indexFound > 0) {
-        $resultText .= "FOUND:\n";
+    if (@indexFound > 0)
+    {
+        print "FOUND:\n";
 
-        for (my $i = 0; $i < $data->{colCount}; $i++) {
-            $resultText .= ${$headings}[$i] . "\t";
+        foreach $heading (@{$headings})
+        {
+            print $heading . "\t";
         }
-        $resultText .= "\n";
+        print "\n";
 
-        for (my $i = 0; $i < @indexFound; $i++) {
-            local $index = ${indexFound}[$i];
-            for (my $j = 0; $j < $data->{colCount}; $j++) {
-                $resultText .= ${$records}[$index][$j] . "\t";
+        foreach $index (@indexFound)
+        {
+            for (my $j = 0; $j < $#{$headings} + 1; $j++)
+            {
+                print ${$records}[$index][$j] . "\t";
             }
-            $resultText .= "\n";
+            print "\n";
         }
     }
-    else {
-        $resultText .= "By request \"$searchText\" nothing found\n";
+    else
+    {
+        print "By request \"$searchText\" nothing found\n";
     }
-
-    return $resultText;
 }
 
 # todo доделать
-sub sortByHeadingNum {
-    local $colNum = shift;
-    local $headings = $data->{headings};
-    local $records = $data->{records};
+sub SortByHeading {
+    print "Heading: ";
+    local $searchHeading = <>;
+    chomp $searchHeading;
 }
 
-loadData();
-print printTable();
-addRecord();
-saveToFile();
+GetFromFile;
+print GetTableFormatText;
+SaveToFile;
