@@ -1,4 +1,6 @@
 #!/bin/perl
+
+$\ = "\n";
 my $outFile = "result_file2";
 my $outText = "";
 my $fileOpenError = "file open error";
@@ -13,6 +15,8 @@ foreach my $fNum (1..9)
     $outText .= "\n";
 }
 
-open($fh, '>', $outFile) || die ($fileOpenError);
-print($fh $outText);
-close($fh);
+print "Done!";
+
+open $fh, '>', $outFile || die $fileOpenError;
+print $fh $outText;
+close $fh;

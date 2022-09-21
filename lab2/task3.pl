@@ -1,19 +1,20 @@
 #!/bin/perl
 
+$" = "\n";
 my $inFile = "file3";
 my $inText = "";
 my $outText = "";
 my $fileOpenError = "file open error";
 my $fh;
 
-open($fh, '<', $inFile) || die ($fileOpenError);
+open $fh, '<', $inFile || die $fileOpenError;
 while (my $line = <$fh>)
 {
     $inText .= $line;
 }
-close($fh);
+close $fh;
 
-my @paragraphs = split(/\n\s{4}/, $inText);
+my @paragraphs = split /\n\s{4}/, $inText;
 my @resParagraphs;
 
 for my $i (2 .. $#paragraphs)
@@ -24,6 +25,5 @@ for my $i (2 .. $#paragraphs)
     }
 }
 
-$" = "\n";
-print("@resParagraphs");
-print("\n");
+print "@resParagraphs";
+print "\n";
