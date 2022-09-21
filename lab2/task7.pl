@@ -17,7 +17,7 @@ while (my $line = <$fh>)
 }
 close $fh;
 
-my @words = $inText =~ m/\w+/g;
+my @words = split /\s+/, $inText;
 
 for my $i (0 .. $#words)
 {

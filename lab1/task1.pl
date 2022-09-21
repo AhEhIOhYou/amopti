@@ -8,8 +8,7 @@ my $text = "1. Первое предложение
 print($text);
 
 my @arr = split ("\n", $text);
-$\ = "%";
-foreach $sentence (@arr)
-{
-    print ($sentence);
-}
+$" = "%";
+# $str ="";
+print("@arr");
+

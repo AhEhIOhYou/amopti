@@ -74,7 +74,7 @@ sub AddRecord {
 }
 sub SaveToFile {
     open $fh, '>', $fileName || die $fileOpenError;
-    print $fh printTable;
+    print $fh GetTableFormatText;
     close $fh;
 }
 sub DeleteRecordByCompanyName {
@@ -157,4 +157,5 @@ sub SortByHeading {
 
 GetFromFile;
 print GetTableFormatText;
+DeleteRecordByCompanyName;
 SaveToFile;
