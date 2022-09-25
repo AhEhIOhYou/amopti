@@ -1,5 +1,10 @@
 #!/usr/bin/perl
 
+# /usr/local/share/perl/5.34.0
+use lib '/home/ahehiohyou/Desktop/work/4course/perl/lab5';
+
+$\ = "\n";
+
 use Data::Dumper qw(Dumper);
 use strict;
 use Auto;
@@ -10,7 +15,7 @@ my $fh;
 
 my $fileName = "auto.txt";
 my $records = ();
-my $parking = ();
+my $parking = Parking->new();
 sub GetFromFile {
     my $inText = "";
     my @arrRecords = ();
@@ -44,11 +49,16 @@ sub LoadObjects {
             ${$arrRecord}[2],
             ${$arrRecord}[3],
         );
-        push(@$parking, $cl);
+        $parking->AddCar($cl);
+    }
+}
+sub PrintAllData {
+    foreach my $car (@{$parking->GetAllCars})
+    {
+        Auto::PrintData($car);
     }
 }
 
 GetFromFile;
 LoadObjects;
-
-print Dumper $parking;
+PrintAllData;
