@@ -1,0 +1,67 @@
+catcat
+a
+cat and cat
+a
+catac
+a
+cat
+a
+ccaatt
+
+zabcz
+a
+zzxzz
+a
+zzz
+a
+zz
+a
+zxz
+a
+zzxzxxz
+
+xabcabcz
+a
+zzzzzzzzzzzzzzzzzz
+a
+xx
+a
+xyz
+a
+zwzwwz
+
+Year is 2009
+a
+1 is a number
+a
+3.1415 matches because . is not a word char
+a
+Not2Bad
+a
+No digits here
+
+\w denotes word characte
+a
+No slashes here
+
+good (excellent) phrase
+a
+good ((recursive)) phrase
+a
+good (too bad) phrase
+a
+word () is not () in brackets
+a
+bad (() recursive) phrase
+a
+no brackets here
+
+Good string
+a
+
+a
+ bad string
+a
+bad string
+a
+ very bad string
