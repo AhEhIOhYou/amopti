@@ -90,14 +90,9 @@ package Auto; {
         }
     }
 
-    sub PrintData{
+    sub ToString {
         my ($car) = @_;
-        print "-----+++++=====+++++=====-----";
-        print "State Number:\t$car->{state_number}";
-        print "Color:\t\t$car->{color}";
-        print "Owner:\t\t$car->{owner}";
-        print "Is on parking:\t$car->{onParking}";
-        print "-----+++++=====+++++=====-----\n";
+        return "$car->{state_number}\t\t$car->{color}\t$car->{owner}\t$car->{onParking}";
     }
 }
 

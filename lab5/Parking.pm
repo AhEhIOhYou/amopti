@@ -117,6 +117,10 @@ package Parking; {
 
         return $arrCars;
     }
+
+    sub ToStringLabels {
+        return "State Number\tColor\tOwner\tIs on parking";
+    }
 }
 
 1; # ok!

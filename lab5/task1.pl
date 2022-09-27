@@ -53,12 +53,43 @@ sub LoadObjects {
     }
 }
 sub PrintAllData {
-    foreach my $car (@{$parking->GetAllCars})
+    print "+" . "-"x55 . "+";
+    print "|No\t" . Parking::ToStringLabels() . "\t|";
+    while (my ($i, $car) = each(@{$parking->GetAllCars}))
     {
-        Auto::PrintData($car);
+        print "|" . $i  ."\t" . Auto::ToString($car) . "\t\t|";
     }
+    print "+" . "-"x55 . "+";
+}
+sub PrintData {
+    my $cars = shift;
+
+    print "+" . "-"x55 . "+";
+    print "|No\t" . Parking::ToStringLabels() . "\t|";
+    while (my ($i, $car) = each(@{$cars}))
+    {
+        print "|" . $i  ."\t" . Auto::ToString($car) . "\t\t|";
+    }
+    print "+" . "-"x55 . "+";
+}
+sub SearchByOwner {
+    print "Search by owner: ";
+    my $searchText = <>;
+    chomp $searchText;
+
+    my $res = $parking->SearchByOwner($searchText);
+
+    print "Result:";
+    if (!defined $res)
+    {
+        print "Nothing found!";
+        return;
+    }
+
+    PrintData($res);
 }
 
 GetFromFile;
 LoadObjects;
 PrintAllData;
+SearchByOwner;
