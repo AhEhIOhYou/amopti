@@ -2,19 +2,19 @@
 
 package Auto; {
 
-    use Data::Dumper qw(Dumper);
     use overload '!'=> \&ReverseParkingsStatus;
 
     sub new {
-        my $class = shift;
+        my ($class, $car) = @_;
         my $self;
-        if (@_ > 0)
+
+        if (defined $car)
         {
             $self = {
-                state_number => shift,
-                color        => shift,
-                owner        => shift,
-                onParking    => shift,
+                state_number => ${$car}[0],
+                color        => ${$car}[1],
+                owner        => ${$car}[2],
+                onParking    => ${$car}[3],
             };
         }
         else
@@ -23,7 +23,7 @@ package Auto; {
                 state_number => 0,
                 color        => 'default',
                 owner        => 'default',
-                onParking    => 0,
+                onParking    => false,
             };
         }
 
@@ -76,10 +76,8 @@ package Auto; {
         return $self->{onParking};
     }
 
-    sub ReverseParkingsStatus()
-    {
+    sub ReverseParkingsStatus {
         my ($car) = @_;
-        print $car->{onParking};
         if ($car->{onParking} eq "true")
         {
             $car->{onParking} = "false";

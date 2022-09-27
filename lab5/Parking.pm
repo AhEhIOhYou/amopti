@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 
 package Parking; {
-    use Data::Dumper qw(Dumper);
 
     sub new {
         my $class = shift;
@@ -17,10 +16,11 @@ package Parking; {
         return $self->{cars};
     }
 
-    sub GetCarByStateNumber() {
+    sub GetCarByStateNumber {
         my ($self, $targetNumber) = @_;
+        my @cars = @{$self->{cars}};
 
-        while (my ($i, $car) = each(@{$self->{cars}}))
+        while (my ($i, $car) = each(@cars))
         {
             if ($targetNumber eq $car->GetStateNumber)
             {
@@ -28,19 +28,15 @@ package Parking; {
             }
         }
 
-        return 0;
+        return;
     }
 
-    sub GetCarByPlaceNumber() {
-        my ($self, $targetNumber) = @_;
-        return $self->{cars}[$targetNumber];
-    }
-
-    sub GetCarsInTheParking() {
+    sub GetCarsInTheParking {
         my ($self) = @_;
         my $arrCars;
+        my @cars =  @{$self->{cars}};
 
-        while (my ($i, $car) = each(@{$self->{cars}}))
+        while (my ($i, $car) = each(@cars))
         {
             if ($car->GetParkingStatus eq "true")
             {
@@ -51,11 +47,12 @@ package Parking; {
         return $arrCars;
     }
 
-    sub GetCarsNotInTheParking() {
+    sub GetCarsNotInTheParking {
         my ($self) = @_;
         my $arrCars;
+        my @cars =  @{$self->{cars}};
 
-        while (my ($i, $car) = each(@{$self->{cars}}))
+        while (my ($i, $car) = each(@cars))
         {
             if ($car->GetParkingStatus eq "false")
             {
@@ -72,12 +69,13 @@ package Parking; {
         return 1;
     }
 
-    sub DeleteCarByStateNumber() {
+    sub DeleteCarByStateNumber {
         my ($self, $targetNumber) = @_;
+        my @cars =  @{$self->{cars}};
 
         local $deleteIndex = -1;
 
-        while (my ($i, $car) = each(@{$self->{cars}}))
+        while (my ($i, $car) = each(@cars))
         {
             if ($targetNumber eq $car->GetStateNumber)
             {
@@ -89,15 +87,15 @@ package Parking; {
         if ($deleteIndex > -1)
         {
             print $deleteIndex . "\n";
-            splice @{$self->{cars}}, $deleteIndex, 1;
+            @tmp = @{$self->{cars}};
+            splice @tmp, $deleteIndex, 1;
+            @{$self->{cars}} = @tmp;
             return 1;
-            # print "\"$targetNumber\" successfully deleted";
-            # print "Error, car \"$targetNumber\" doesn't exist\n";
         }
         return 0;
     }
 
-    sub ChangeParkingStatus() {
+    sub ChangeParkingStatus {
         my ($self, $car) = @_;
         !$car;
     }
@@ -105,8 +103,9 @@ package Parking; {
     sub SearchByOwner {
         my ($self, $searchOwner) = @_;
         my $arrCars;
+        my @cars =  @{$self->{cars}};
 
-        while (my ($i, $car) = each(@{$self->{cars}}))
+        while (my ($i, $car) = each(@cars))
         {
 
             if ($car->GetOwner =~ /$searchOwner/)
@@ -120,6 +119,15 @@ package Parking; {
 
     sub ToStringLabels {
         return "State Number\tColor\tOwner\tIs on parking";
+    }
+
+    sub ToArrLabels {
+        return (
+            "State number",
+            "Color",
+            "Owner",
+            "Is on parking",
+            );
     }
 }
 
