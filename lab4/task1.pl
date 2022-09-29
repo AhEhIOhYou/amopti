@@ -9,6 +9,9 @@ my $fileName = "suppliers.txt";
 my $headings = ();
 my $records = ();
 
+sub CheckData {
+    return (defined($headings) && defined($records))
+}
 sub GetFromFile {
     local $inText = "";
 
@@ -39,6 +42,13 @@ sub GetFromFile {
     $records = \@arrRecords;
 }
 sub GetTableFormatText {
+
+    if (!CheckData)
+    {
+        print "Error! No data available!\n";
+        return
+    }
+
     local $text = "";
 
     foreach $heading (@{$headings})
@@ -59,6 +69,13 @@ sub GetTableFormatText {
     return $text;
 }
 sub AddRecord {
+
+    if (!CheckData)
+    {
+        print "Error! No data available!\n";
+        return
+    }
+
     local @newData;
 
     for (my $i = 0; $i < $#{$headings} + 1; $i++)
@@ -73,11 +90,25 @@ sub AddRecord {
     print "Successfully added!\n";
 }
 sub SaveToFile {
+
+    if (!CheckData)
+    {
+        print "Error! No data available!\n";
+        return
+    }
+
     open $fh, '>', $fileName || die $fileOpenError;
     print $fh GetTableFormatText;
     close $fh;
 }
 sub DeleteRecordByCompanyName {
+
+    if (!CheckData)
+    {
+        print "Error! No data available!\n";
+        return
+    }
+
     print "Company Name: ";
     local $nameSearch = <>;
     chomp $nameSearch;
@@ -105,6 +136,13 @@ sub DeleteRecordByCompanyName {
     }
 }
 sub Search {
+
+    if (!CheckData)
+    {
+        print "Error! No data available!\n";
+        return
+    }
+
     print "Search: ";
     local $searchText = <>;
     chomp $searchText;
@@ -148,14 +186,38 @@ sub Search {
     }
 }
 
-# todo доделать
+# todo делать ли?
 sub SortByHeading {
     print "Heading: ";
     local $searchHeading = <>;
     chomp $searchHeading;
 }
 
-GetFromFile;
-print GetTableFormatText;
-DeleteRecordByCompanyName;
-SaveToFile;
+my $options = "0 - print all data\n1 - add record\n2 - save to file\n3 - dele by name\n4 - search\n5 - load file\n6 - exit\nOption: ";
+print $options;
+while (<>) {
+    my $cm = $_;
+    chomp($cm);
+    if ($cm == 0) {
+        print GetTableFormatText;
+    }
+    if ($cm == 1) {
+        AddRecord;
+    }
+    if ($cm == 2) {
+        SaveToFile;
+    }
+    if ($cm == 3) {
+        DeleteRecordByCompanyName;
+    }
+    if ($cm == 4) {
+        Search;
+    }
+    if ($cm == 5) {
+        GetFromFile;
+    }
+    if ($cm == 6) {
+        exit(100);
+    }
+    print $options;
+}
