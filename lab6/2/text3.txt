@@ -1,0 +1,11 @@
+c:\cat1\cat2\file0.txt
+c:\cat1\cat2\file1.txt
+c:\cat1\cat2\file2.txt
+c:\cat1\cat2\file3.txt
+c:\cat1\cat2\file4.txt
+d:\nya1\nya2\nya3\nya4\nya5\nyaa.lisa
+d:\nya1\nyaa.lisa
+i:\nya1\nyaa.lisa
+i:\nya1\nyaa.miko
+m:\nya1\nya2\nya3\nyaa.lisa
+a:\nya1\nya2\nyaa.lisa
