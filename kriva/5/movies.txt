@@ -1,0 +1,6 @@
+ID	Name	Description	Genre	Dur	Rating	Show	Cinemas	Avg_price	
+1	Aaaa	fhdsfgsdgs	n112	112	5	true	Aa_Bb_Cc	301	
+2	Bbbb	sssssgsdgs	n112	113	4	true	Aa_Bb_Cc	310	
+4	Cccc	fhdsfgsdgs	n113	30	3	false	Aa_Cc	301	
+12	Dddd	123f1fsdgs	n11	1	2	false	Bb_Cc	302	
+33	Eeee	f12d12dsdgs	n2	30	100	true	Aa_Bb_Cc	304	
