@@ -1,0 +1,2 @@
+ID	Full_name	Year_of_birth	Address	Date_of_entry	Type	Course	Group_number	Books	Date_taken	
+321	Oy_Ao_Ya	2002	La_lalla_lala_12	2022	student	4	191	Aaaaa_Bbbb_Ccc-cccc_Ddd	12-12-2002_13-13-2003_14-14-2004	
